@@ -32,7 +32,6 @@ const validatePatientInput = (input) => {
   return schema.validate(input);
 };
 
-module.exports = { validatePatientInput };
 
 const validateCareGiverInput = (input) => {
     const schema = Joi.object({
