@@ -6,19 +6,19 @@ const handlePatientLogin = async (req, res) => {
     const {name, password} = req.body;
 
     if(!name || !password) {
-        return res.status(400).json({"Message": "name and password required"})
+        return res.status(400).json({"message": "name and password required"})
     };
 
     const patient = await db.collection("patients").findOne({name: name});
 
     if(!patient){
-        return res.status(401).json({"Message": `patient  ${name} does't exist!!`});
+        return res.status(401).json({"message": `patient  ${name} does't exist!!`});
     }
 
     const match = await bcrypt.compare(password, patient.password);
 
     if(!match){
-        return res.status(401).json({"Message": "Check password and log in again!!!"})
+        return res.status(401).json({"message": "Check password and log in again!!!"})
     }
    const accessToken = jwt.sign(
         {
@@ -53,7 +53,7 @@ const handlePatientLogin = async (req, res) => {
     })
     res.status(200).json({
         accessToken: accessToken,
-        "Message": `patient ${patient.name} logged in successfully`,
+        "message": `patient ${patient.name} logged in successfully`,
         "roles": patient.roles,
         patientId: patient.patientId
     });

@@ -6,19 +6,19 @@ const handleDoctorLogin = async (req, res) => {
     const {username, password} = req.body;
 
     if(!username || !password) {
-        return res.status(400).json({"Message": "username and password required"})
+        return res.status(400).json({"message": "username and password required"})
     };
 
     const doctor = await db.collection("doctors").findOne({username: username});
 
     if(!doctor){
-        return res.status(401).json({"Message": `doctor  ${username} does't exist!!`});
+        return res.status(401).json({"message": `doctor  ${username} does't exist!!`});
     }
 
     const match = await bcrypt.compare(password, doctor.password);
 
     if(!match){
-        return res.status(401).json({"Message": "Check password and log in again!!!"})
+        return res.status(401).json({"message": "Check password and log in again!!!"})
     }
    const accessToken = jwt.sign(
         {
@@ -52,7 +52,7 @@ const handleDoctorLogin = async (req, res) => {
     })
     res.status(200).json({
         accessToken: accessToken,
-        "Message": `Doctor ${doctor.username} logged in successfully`,
+        "message": `Doctor ${doctor.username} logged in successfully`,
         "roles": doctor.roles
     });
 

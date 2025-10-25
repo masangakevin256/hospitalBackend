@@ -6,19 +6,19 @@ const handleAdminLogin = async (req, res) => {
     const {username, password} = req.body;
 
     if(!username || !password) {
-        return res.status(400).json({"Message": "username and password required"})
+        return res.status(400).json({"message": "username and password required"})
     };
 
     const admin = await db.collection("admins").findOne({username: username});
 
     if(!admin){
-        return res.status(401).json({"Message": `admin  ${username} does't exist!!`});
+        return res.status(401).json({"message": `admin  ${username} does't exist!!`});
     }
 
     const match = await bcrypt.compare(password, admin.password);
 
     if(!match){
-        return res.status(401).json({"Message": "Check password and log in again!!!"})
+        return res.status(401).json({"message": "Check password and log in again!!!"})
     }
    const accessToken = jwt.sign(
         {
