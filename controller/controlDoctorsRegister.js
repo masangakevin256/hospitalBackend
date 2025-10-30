@@ -9,10 +9,10 @@ const addNewDoctor = async (req,res) => {
     const sendEmail = require("../utils/sendEmail");
     const roles = "doctor"
     const db = getDb();
-    const {email, username , password, doctorId, phoneNumber, gender , secretReg, specialty} = req.body;
+    const {email, username , password, phoneNumber, gender , secretReg, specialty} = req.body;
     if(!db) return res.status(404).json({"message": "Database not initialized"});
-    if(!email || !username || !password || !doctorId || !phoneNumber   || ! gender  || !secretReg){
-        return res.status(400).json({"message": "email, username, password doctor id, adminId registering ,gender and phone number required"})
+    if(!email || !username || !password  || !phoneNumber   || ! gender  || !secretReg){
+        return res.status(400).json({"message": "email, username, password, adminId registering ,gender and phone number required"})
     }
     
     try {
@@ -23,11 +23,35 @@ const addNewDoctor = async (req,res) => {
         }
         //check for duplicates
         const duplicateUsernameEmail = await db.collection("doctors").findOne({email: email}, {username: username});
-        const duplicateDoctorId = await db.collection("doctors").findOne({doctorId: doctorId});
         
         if(duplicateUsernameEmail) return res.status(409).json({"message": `Doctor with email ${email} and username ${username} already exists`});
-        if(duplicateDoctorId) return res.status(409).json({"message": `Doctor with  id ${doctorId} already exists`});
-        //hash password
+        
+        //assign id to doctor
+            const lastDoctor = await db.collection("doctors")
+            .find()
+            .sort({ doctorId: -1 })
+            .limit(1)
+            .toArray();
+
+            let doctorId;
+
+            if (lastDoctor.length === 0) {
+            // No doctor yet → start with DOC001
+                doctorId = "DOC001";
+            } else {
+            // Extract the last doctorId
+            const lastId = lastDoctor[0].doctorId; 
+            
+            // Extract numeric part using regex
+            const num = parseInt(lastId.match(/\d+/)[0]);
+            
+            // Increment and pad to 3 digits
+            const nextNum = String(num + 1).padStart(3, "0");
+            
+            // Combine with prefix
+                doctorId = "DOC" + nextNum;
+            }
+            //hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const doctorFormat ={

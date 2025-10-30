@@ -9,10 +9,10 @@ const addNewAdmin = async (req,res) => {
     const sendEmail = require("../utils/sendEmail");
     const roles = "admin"
     const db = getDb();
-    const {email, username , password, adminId, phoneNumber, secretReg, gender } = req.body;
+    const {email, username , password, phoneNumber, secretReg, gender } = req.body;
     if(!db) return res.status(404).json({"message": "Database not initialized"});
-    if(!email || !username || !password || !adminId ||! phoneNumber || !gender || !secretReg ){
-        return res.status(400).json({"message": "email, username, password admin id, admin id of the one registering, gender  and phone number required"})
+    if(!email || !username || !password  ||! phoneNumber || !gender || !secretReg ){
+        return res.status(400).json({"message": "email, username, password , secret reg, gender  and phone number required"})
     }
     
     try {
@@ -23,10 +23,34 @@ const addNewAdmin = async (req,res) => {
         }
         //check for duplicates
         const duplicateUsernameEmail = await db.collection("admins").findOne({email: email}, {username: username});
-        const duplicateAdminId = await db.collection("admins").findOne({adminId: adminId});
         
         if(duplicateUsernameEmail) return res.status(409).json({"message": `Admin with email ${email} and username ${username} already exists`});
-        if(duplicateAdminId) return res.status(409).json({"message": `Admin with  id ${adminId} already exists`});
+
+        //assign id to admin
+            const lastAdmin = await db.collection("admins")
+            .find()
+            .sort({ adminId: -1 })
+            .limit(1)
+            .toArray();
+
+            let adminId;
+
+            if (lastAdmin.length === 0) {
+            // No parent yet → start with TC001
+                adminId = "AD001";
+            } else {
+            // Extract the last adminId
+            const lastId = lastAdmin[0].adminId; 
+            
+            // Extract numeric part using regex
+            const num = parseInt(lastId.match(/\d+/)[0]);
+            
+            // Increment and pad to 3 digits
+            const nextNum = String(num + 1).padStart(3, "0");
+            
+            // Combine with prefix
+                adminId = "AD" + nextNum;
+            }
         //hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 

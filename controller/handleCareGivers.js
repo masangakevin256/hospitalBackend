@@ -73,9 +73,9 @@ const addNewCareGiver = async (req,res) => {
   const roles = "careGiver"
     let registeredBy;
     const db = getDb();
-    const {name, phoneNumber, regId, careGiverId, password, gender, email} = req.body;
+    const {name, phoneNumber, regId, password, gender, email} = req.body;
     if(!db) return res.status(404).json({"message": "Database not initialized"});
-    if(!name ||!phoneNumber || !regId || !careGiverId || !password || !gender || !email){
+    if(!name ||!phoneNumber || !regId  || !password || !gender || !email){
         return res.status(400).json({
           "message": "name, phoneNumber , care giver id, gender ,email password and registerer id required"
         })
@@ -91,10 +91,34 @@ const addNewCareGiver = async (req,res) => {
         }
         //check for duplicates
         const duplicateUsernameEmail = await db.collection("careGivers").findOne({name: name}, {phoneNumber: phoneNumber});
-        const duplicateCareGiverId = await db.collection("careGivers").findOne({careGiverId: careGiverId});
+    
         
         if(duplicateUsernameEmail) return res.status(409).json({"message": `careGiver with name ${name} and phone number ${phoneNumber} already exists`});
-        if(duplicateCareGiverId) return res.status(409).json({"message": `careGiver with id ${careGiverId} exists already`})
+        //assign id to parent
+            const lastCareGiver = await db.collection("careGivers")
+            .find()
+            .sort({ careGiverId: -1 })
+            .limit(1)
+            .toArray();
+
+            let careGiverId;
+
+            if (lastCareGiver.length === 0) {
+            // No caregiver  yet → start with CG001
+                careGiverId = "CG001";
+            } else {
+            // Extract the last careGiverId
+            const lastId = lastCareGiver[0].careGiverId; 
+            
+            // Extract numeric part using regex
+            const num = parseInt(lastId.match(/\d+/)[0]);
+            
+            // Increment and pad to 3 digits
+            const nextNum = String(num + 1).padStart(3, "0");
+            
+            // Combine with prefix
+                careGiverId = "CG" + nextNum;
+            }
         //hash password
         const hashedPassword = await bcrypt.hash(password, 10);
         if(usedDoctorsId){

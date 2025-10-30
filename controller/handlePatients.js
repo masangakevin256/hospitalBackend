@@ -81,11 +81,11 @@ const addNewPatient = async (req,res) => {
     const roles = "patient"
     let registeredBy;
     const db = getDb();
-    const {name,age, patientId, phoneNumber, address, password, sickness, regId , assignedDoctor, assignedCareGiver, gender, email} = req.body;
+    const {name,age, phoneNumber, address, password, sickness, regId , assignedDoctor, assignedCareGiver, gender, email} = req.body;
     if(!db) return res.status(404).json({"message": "Database not initialized"});
-    if(!name || !age || !patientId || !address || !phoneNumber || !sickness || !regId  || !password || !assignedDoctor || !gender || !email ){
+    if(!name || !age  || !address || !phoneNumber || !sickness || !regId  || !password || !assignedDoctor || !gender || !email ){
         return res.status(400).json({
-          "message": "name, age,gender, password , patient id  sickness, doctor/admin id assign doctor and care giver, gender , and address phone number required"
+          "message": "name, age,gender, password ,  sickness, doctor/admin id assign doctor and care giver, gender , and address phone number required"
         })
     }
     try {
@@ -105,10 +105,34 @@ const addNewPatient = async (req,res) => {
         // if(!careGiverToBeAssigned) return res.status(400).json({"message": `Care giver ${assignedCareGiver} doesn't exist`})
         //check for duplicates
         const duplicateUsernameEmail = await db.collection("patients").findOne({name: name}, {phoneNumber: phoneNumber});
-        const duplicatePatientId = await db.collection("patients").findOne({patientId: patientId});
+      
         
         if(duplicateUsernameEmail) return res.status(409).json({"message": `patient with name ${name} and phone number ${phoneNumber} already exists`});
-        if(duplicatePatientId) return res.status(409).json({"message": `Patient with id ${patientId} exists already`})
+        //assign id to 
+            const lastPatient = await db.collection("parents")
+            .find()
+            .sort({ patientId: -1 })
+            .limit(1)
+            .toArray();
+
+            let patientId;
+
+            if (lastPatient.length === 0) {
+            // No patient yet → start with PAT001
+                patientId = "PAT001";
+            } else {
+            // Extract the last patientId
+            const lastId = lastPatient[0].patientId; 
+            
+            // Extract numeric part using regex
+            const num = parseInt(lastId.match(/\d+/)[0]);
+            
+            // Increment and pad to 3 digits
+            const nextNum = String(num + 1).padStart(3, "0");
+            
+            // Combine with prefix
+                patientId = "PAT" + nextNum;
+            }
         //hash password
         const hashedPassword = await bcrypt.hash(password, 10);
         if(usedDoctorsId){
