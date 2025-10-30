@@ -109,7 +109,7 @@ const addNewPatient = async (req,res) => {
         
         if(duplicateUsernameEmail) return res.status(409).json({"message": `patient with name ${name} and phone number ${phoneNumber} already exists`});
         //assign id to 
-            const lastPatient = await db.collection("parents")
+            const lastPatient = await db.collection("patients")
             .find()
             .sort({ patientId: -1 })
             .limit(1)
