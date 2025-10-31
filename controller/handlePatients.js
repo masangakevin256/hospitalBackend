@@ -218,10 +218,28 @@ const updatePatient = async (req, res) => {
     if (!db) return res.status(500).json({ message: "Database not initialized" });
     if (!id) return res.status(400).json({ message: "Missing patient ID" });
     if(!updates) return res.status(404).json({"message": "Updates not found!"})
+    
+    const patient = await db.collection("patients").findOne({ _id: new ObjectId(id) });
+    if (!patient) {
+      return res.status(404).json({ message: `Patient with ID ${id} not found` });
+    }
 
-      if(updates.password ) {
-        updates.password = await bcrypt.hash(updates.password, 10);
+    // Handle password change
+    if (updates.currentPassword && updates.newPassword) {
+      //  Verify old password
+      const isMatch = await bcrypt.compare(updates.currentPassword, patient.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Current password is incorrect" });
       }
+
+      //  Hash the new password
+      updates.password = await bcrypt.hash(updates.newPassword, 10);
+
+      //  Remove unnecessary fields
+      delete updates.currentPassword;
+      delete updates.newPassword;
+      delete updates.confirmPassword;
+    }
 
    const result = await db.collection("patients").updateOne({_id: new ObjectId(id)}, {$set: updates})
 
