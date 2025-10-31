@@ -134,7 +134,7 @@ const addVitals = async (req, res) => {
     );
     await db.collection("patients").updateOne(
       { patientId },
-      { $set: { height: vitalsDoc.height, weight: vitalsDoc.weight } }
+      { $set: { height: vitalsDoc.height, weight: vitalsDoc.weight, lastHeartRate: vitalsDoc.heartRate } }
     );
 
     await db.collection("vitals").insertOne(vitalsDoc);
