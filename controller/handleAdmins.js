@@ -35,13 +35,19 @@ const updateAdmin = async (req,res) => {
         //get Admin with the id
         const admin = await db.collection("admins").findOne({_id: new ObjectId(id)});
         if(!admin) return res.status(404).json({"message": `cannot find Admin with that ${id}`})
-
-        if(updates.password){
-            updates.password = await bcrypt.hash(updates.password, 10);
+        if (updates.currentPassword && updates.password) {
+        // Check if the current password matches
+        const isMatch = await bcrypt.compare(updates.currentPassword, admin.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Current password is incorrect" });
         }
-        // if(updates.adminId){
-        //     return res.status(400).json({"message": "Cannot update admin id"});
-        // }
+
+        // Hash the new password
+        updates.password = await bcrypt.hash(updates.password, 10);
+        
+        // Remove currentPassword from updates so it’s not stored
+        delete updates.currentPassword;
+        }
         //  if(updates.roles){
         //     return res.status(400).json({"message": "Cannot update roles"});
         // }
