@@ -24,7 +24,8 @@ const handlePatientLogin = async (req, res) => {
         {
             userInfo: {
                 name: patient.name,
-                roles: patient.roles   
+                roles: patient.roles,
+                patientId: patient.patientId 
             }   
         },
         process.env.ACCESS_SECRET_TOKEN,
