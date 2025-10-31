@@ -182,23 +182,23 @@ const addNewPatient = async (req,res) => {
         
 
         //send email to patients
-      await sendEmail(
-        patientFormat.email,
-        "Welcome to General Hospital Home Care System",
-        `Dear ${patientFormat.name},\nWelcome to our Home Health Care program. Your assigned doctor is ${patientFormat.assignedDoctor.name}.`,
-        `
-          <div style="font-family: Arial, sans-serif; padding: 20px; background: #f4f8fb; border-radius: 10px;">
-            <h2 style="color: #28a745;">🎉 Welcome, ${patientFormat.name}!</h2>
-            <p>We’re happy to have you in our <strong>Home Health Care Program</strong>.</p>
-            <p>Your assigned doctor is <strong>${patientFormat.assignedDoctor.name}</strong>.</p>
-            <p>Your care giver is <strong>${patientFormat.assignedCareGiver.name}</strong>.</p>
-            <p>You can now receive remote monitoring and care updates directly from our system.</p>
-            <br />
-            <p style="color:#777;">Best regards,<br><strong>General Hospital Home Care Team</strong></p>
-          </div>
-        `,
-          registrar?.email
-      );
+      // await sendEmail(
+      //   patientFormat.email,
+      //   "Welcome to General Hospital Home Care System",
+      //   `Dear ${patientFormat.name},\nWelcome to our Home Health Care program. Your assigned doctor is ${patientFormat.assignedDoctor.name}.`,
+      //   `
+      //     <div style="font-family: Arial, sans-serif; padding: 20px; background: #f4f8fb; border-radius: 10px;">
+      //       <h2 style="color: #28a745;">🎉 Welcome, ${patientFormat.name}!</h2>
+      //       <p>We’re happy to have you in our <strong>Home Health Care Program</strong>.</p>
+      //       <p>Your assigned doctor is <strong>${patientFormat.assignedDoctor.name}</strong>.</p>
+      //       <p>Your care giver is <strong>${patientFormat.assignedCareGiver.name}</strong>.</p>
+      //       <p>You can now receive remote monitoring and care updates directly from our system.</p>
+      //       <br />
+      //       <p style="color:#777;">Best regards,<br><strong>General Hospital Home Care Team</strong></p>
+      //     </div>
+      //   `,
+      //     registrar?.email
+      // );
         const results = await db.collection("patients").insertOne(patientFormat);
         res.status(201).json(
             {"message":`Patient  ${gender === "Male" ? "Mr": "Mrs"} ${patientFormat.name} added successfully` }
