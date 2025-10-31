@@ -79,6 +79,7 @@ const addVitals = async (req, res) => {
     height,
     bmi,
     notes,
+    status
   } = req.body;
 
   if (!patientId || !bloodPressure || !glucoseLevel || !heartRate) {
@@ -92,6 +93,11 @@ const addVitals = async (req, res) => {
     const patient = await db.collection("patients").findOne({ patientId });
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
+    }
+    //check if its the patient sending alert
+    //if he/she is a patient and the patientId is not the same can't send the vital
+    if (user.roles === "patient" && user.patientId !== patientId) {
+      return res.status(403).json({ message: "Unauthorized to send this vital" });
     }
 
     //  Try find doctor assigned to this patient (by ID instead of name)
@@ -154,7 +160,9 @@ const addVitals = async (req, res) => {
         patientId,
         alertType,
         message,
-        status: "Pending",
+        weight,
+        height,
+        status: status || "pending",
         timestamp: format(new Date(), "yyyy/MM/dd HH:mm:ss"),
       };
 
