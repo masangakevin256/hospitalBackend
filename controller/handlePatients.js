@@ -240,8 +240,18 @@ const updatePatient = async (req, res) => {
       delete updates.newPassword;
       delete updates.confirmPassword;
     }
+    const existingPatient = await db.collection("patients").findOne({ _id: new ObjectId(id) });
 
-   const result = await db.collection("patients").updateOne({_id: new ObjectId(id)}, {$set: updates})
+    const updatedData = {
+      ...existingPatient,
+      ...updates, // only overwrite the fields you send
+    };
+    delete updatedData._id; // avoid MongoDB _id conflict
+
+   const result = await db.collection("patients").updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedData }
+    );
 
     if (result.modifiedCount === 0) {
       return res.status(200).json({ message: "No changes made" });
