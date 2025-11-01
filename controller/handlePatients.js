@@ -101,7 +101,7 @@ const addNewPatient = async (req,res) => {
         //check assigned caregiver
         const careGiverToBeAssigned = await db.collection("careGivers").findOne({name: assignedCareGiver});
 
-        if(!doctorToBeAssigned)  res.status(400).json({"message": `Doctor ${assignedDoctor} doesn't exist`})
+        if(!doctorToBeAssigned) return res.status(400).json({"message": `Doctor ${assignedDoctor} doesn't exist`})
         if(!careGiverToBeAssigned) return res.status(400).json({"message": `Care giver ${assignedCareGiver} doesn't exist`})
         //check for duplicates
         const duplicateUsernameEmail = await db.collection("patients").findOne({name: name}, {phoneNumber: phoneNumber});
