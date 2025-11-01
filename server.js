@@ -49,6 +49,13 @@ app.use("/doctors", require("./routes/doctors"));
 app.use("/patients", require("./routes/patients"));
 app.use("/careGivers", require("./routes/careGivers"));
 
+
+//  React fallback route (must come before the 404 handler)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+
 app.all(/.*/, (req, res) => {
     res.status(404);
     if(req.accepts("html")){
