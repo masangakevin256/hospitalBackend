@@ -73,21 +73,21 @@ const addNewDoctor = async (req,res) => {
             return res.status(400).json({"message": `${error.details[0].message}`});
         }
         //send email
-        await sendEmail(
-        email,
-        "Welcome to General Hospital System",
-        `Dear Dr. ${username}, welcome to the General Hospital Home Care team.`,
-        `
-            <div style="font-family: Arial, sans-serif; padding: 20px; background: #f4f8fb; border-radius: 10px;">
-            <h2 style="color: #007bff;">👨‍⚕️ Welcome, Dr. ${username}!</h2>
-            <p>We’re excited to have you join our <strong>Home Health Care Program</strong>.</p>
-            <p>Your doctor ID is <strong>${doctorId}</strong>.</p>
-            <p>You can now start monitoring and assisting patients remotely.</p>
-            <br />
-            <p style="color:#777;">Best regards,<br><strong>General Hospital Administration</strong></p>
-            </div>
-        `
-        );
+        // await sendEmail(
+        // email,
+        // "Welcome to General Hospital System",
+        // `Dear Dr. ${username}, welcome to the General Hospital Home Care team.`,
+        // `
+        //     <div style="font-family: Arial, sans-serif; padding: 20px; background: #f4f8fb; border-radius: 10px;">
+        //     <h2 style="color: #007bff;">👨‍⚕️ Welcome, Dr. ${username}!</h2>
+        //     <p>We’re excited to have you join our <strong>Home Health Care Program</strong>.</p>
+        //     <p>Your doctor ID is <strong>${doctorId}</strong>.</p>
+        //     <p>You can now start monitoring and assisting patients remotely.</p>
+        //     <br />
+        //     <p style="color:#777;">Best regards,<br><strong>General Hospital Administration</strong></p>
+        //     </div>
+        // `
+        // );
         const results = await db.collection("doctors").insertOne(doctorFormat);
         res.status(201).json(
             {

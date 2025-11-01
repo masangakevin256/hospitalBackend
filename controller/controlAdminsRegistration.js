@@ -72,21 +72,21 @@ const addNewAdmin = async (req,res) => {
             return res.status(400).json({"message": `${error.details[0].message}`});
         }
         //send email 
-        await sendEmail(
-        email,
-        "Admin Account Created - General Hospital System",
-        `Dear ${username}, your admin account for General Hospital has been created successfully.`,
-        `
-            <div style="font-family: Arial, sans-serif; padding: 20px; background: #e6f4ea; border-radius: 10px;">
-            <h2 style="color: #28a745;">✅ Welcome, ${username}!</h2>
-            <p>Your admin account for the <strong>General Hospital Home Care System</strong> is now active.</p>
-            <p><strong>Admin ID:</strong> ${adminId}</p>
-            <p>Please keep your credentials secure.</p>
-            <br />
-            <p style="color:#777;">Best regards,<br><strong>General Hospital IT Department</strong></p>
-            </div>
-        `
-        );
+        // await sendEmail(
+        // email,
+        // "Admin Account Created - General Hospital System",
+        // `Dear ${username}, your admin account for General Hospital has been created successfully.`,
+        // `
+        //     <div style="font-family: Arial, sans-serif; padding: 20px; background: #e6f4ea; border-radius: 10px;">
+        //     <h2 style="color: #28a745;">✅ Welcome, ${username}!</h2>
+        //     <p>Your admin account for the <strong>General Hospital Home Care System</strong> is now active.</p>
+        //     <p><strong>Admin ID:</strong> ${adminId}</p>
+        //     <p>Please keep your credentials secure.</p>
+        //     <br />
+        //     <p style="color:#777;">Best regards,<br><strong>General Hospital IT Department</strong></p>
+        //     </div>
+        // `
+        // );
         const results = await db.collection("admins").insertOne(adminFormat);
         res.status(201).json(
             {"message":`

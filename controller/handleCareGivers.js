@@ -146,23 +146,23 @@ const addNewCareGiver = async (req,res) => {
           return res.status(400).json({"message": `${error.details[0].message}`})
         }
         //send email
-      const emailSend =  await sendEmail(
-        careGiverFormat.email,
-        "Welcome to General Hospital Care Team",
-        `Dear ${name}, welcome to General Hospital Home Care Program as a Caregiver.`,
-        `
-          <div style="font-family: Arial, sans-serif; padding: 20px; background: #f0f9ff; border-radius: 10px;">
-            <h2 style="color: #007bff;">👩‍⚕️ Welcome, ${name}!</h2>
-            <p>We’re excited to have you join our <strong>Home Health Care Program</strong> as a Caregiver.</p>
-            <p><strong>Caregiver ID:</strong> ${careGiverId}</p>
-            <p><strong>Registered by:</strong> ${registeredBy}</p>
-            <p>You can now start assisting patients assigned to you through the monitoring system.</p>
-            <br />
-            <p style="color:#777;">Best regards,<br><strong>General Hospital Administration</strong></p>
-          </div>
-        `
-      );
-      // if(!emailSend) return res.status(400).json({"message": "Failed to send email"});
+      // const emailSend =  await sendEmail(
+      //   careGiverFormat.email,
+      //   "Welcome to General Hospital Care Team",
+      //   `Dear ${name}, welcome to General Hospital Home Care Program as a Caregiver.`,
+      //   `
+      //     <div style="font-family: Arial, sans-serif; padding: 20px; background: #f0f9ff; border-radius: 10px;">
+      //       <h2 style="color: #007bff;">👩‍⚕️ Welcome, ${name}!</h2>
+      //       <p>We’re excited to have you join our <strong>Home Health Care Program</strong> as a Caregiver.</p>
+      //       <p><strong>Caregiver ID:</strong> ${careGiverId}</p>
+      //       <p><strong>Registered by:</strong> ${registeredBy}</p>
+      //       <p>You can now start assisting patients assigned to you through the monitoring system.</p>
+      //       <br />
+      //       <p style="color:#777;">Best regards,<br><strong>General Hospital Administration</strong></p>
+      //     </div>
+      //   `
+      // );
+      // // if(!emailSend) return res.status(400).json({"message": "Failed to send email"});
         //add care giver
         const results = await db.collection("careGivers").insertOne(careGiverFormat);
         res.status(201).json(
