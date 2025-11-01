@@ -19,6 +19,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "build")));
 
 //routes 
 //login
@@ -51,7 +52,7 @@ app.use("/careGivers", require("./routes/careGivers"));
 
 
 //  React fallback route (must come before the 404 handler)
-app.get("*", (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
