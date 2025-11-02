@@ -84,7 +84,7 @@ const addAlert = async (req, res) => {
       "alertType": alertType,
       "message": message,
       "status": status || "pending",
-      "timeStamp": `${format(new Date() ,"yyyy/MM/dd  HH:mm:ss")}`
+      timeStamp: new Date().toISOString()
     };
     //validate doc alert input
     const {error} = handleAllUsersInputs.validateAlertInput(alertDoc);
