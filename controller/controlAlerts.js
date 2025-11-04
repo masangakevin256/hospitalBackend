@@ -15,7 +15,10 @@ const getAllAlerts = async (req, res) => {
     //  Role-based filtering
     if (user.roles === "admin") {
       // admin sees everything
-      alerts = await db.collection("alerts").find().toArray();
+      alerts = await db.collection("alerts")
+      .find()
+      .sort({timeStamp: -1})
+      .toArray();
     } 
     else if (user.roles === "doctor") {
       // doctor sees alerts for patients assigned to them
@@ -29,6 +32,7 @@ const getAllAlerts = async (req, res) => {
       alerts = await db
         .collection("alerts")
         .find({ patientId: { $in: patientIds } })
+        .sort({timeStamp: -1})
         .toArray();
     } 
     else if (user.roles === "careGiver") {
@@ -43,6 +47,7 @@ const getAllAlerts = async (req, res) => {
       alerts = await db
         .collection("alerts")
         .find({ patientId: { $in: patientIds } })
+        .sort({timeStamp: -1})
         .toArray();
     } 
     else if (user.roles === "patient") {
@@ -50,6 +55,7 @@ const getAllAlerts = async (req, res) => {
       alerts = await db
         .collection("alerts")
         .find({ patientId: user.patientId })
+        .sort({timeStamp: -1})
         .toArray();
     } 
     else {
