@@ -167,7 +167,7 @@ const addVitals = async (req, res) => {
         weight,
         height,
         status: status || "pending",
-        timeStamp: new Date().toISOString(),
+        timestamp: new Date().toISOString(),
       };
 
       await db.collection("alerts").insertOne(alertDoc);

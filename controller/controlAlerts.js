@@ -17,7 +17,7 @@ const getAllAlerts = async (req, res) => {
       // admin sees everything
       alerts = await db.collection("alerts")
       .find()
-      .sort({timeStamp: -1})
+      .sort({timestamp: -1})
       .toArray();
     } 
     else if (user.roles === "doctor") {
@@ -32,7 +32,7 @@ const getAllAlerts = async (req, res) => {
       alerts = await db
         .collection("alerts")
         .find({ patientId: { $in: patientIds } })
-        .sort({timeStamp: -1})
+        .sort({timestamp: -1})
         .toArray();
     } 
     else if (user.roles === "careGiver") {
@@ -47,7 +47,7 @@ const getAllAlerts = async (req, res) => {
       alerts = await db
         .collection("alerts")
         .find({ patientId: { $in: patientIds } })
-        .sort({timeStamp: -1})
+        .sort({timestamp: -1})
         .toArray();
     } 
     else if (user.roles === "patient") {
@@ -55,7 +55,7 @@ const getAllAlerts = async (req, res) => {
       alerts = await db
         .collection("alerts")
         .find({ patientId: user.patientId })
-        .sort({timeStamp: -1})
+        .sort({timestamp: -1})
         .toArray();
     } 
     else {
@@ -90,7 +90,7 @@ const addAlert = async (req, res) => {
       "alertType": alertType,
       "message": `Patient ${patient.name}: ${message}`,
       "status": status || "pending",
-      timeStamp: new Date().toISOString()
+      timestamp: new Date().toISOString()
     };
     //validate doc alert input
     const {error} = handleAllUsersInputs.validateAlertInput(alertDoc);
