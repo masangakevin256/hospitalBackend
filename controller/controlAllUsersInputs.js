@@ -107,7 +107,7 @@ const validateAlertInput = (input) => {
         alertType: Joi.string().required(),
         message: Joi.string().required(),
         status: Joi.string().required(),
-        timeStamp: Joi.string().required(),
+        timestamp: Joi.string().required(),
         
     });
     return schema.validate(input)
