@@ -88,7 +88,7 @@ const addAlert = async (req, res) => {
     const alertDoc = {
       "patientId": patientId,
       "alertType": alertType,
-      "message": message,
+      "message": `Patient ${patient.name}: ${message}`,
       "status": status || "pending",
       timeStamp: new Date().toISOString()
     };
