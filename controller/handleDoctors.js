@@ -85,10 +85,13 @@ const updateDoctor = async (req, res) => {
     // if (updates.roles) {
     //   return res.status(400).json({ message: "Cannot update roles" });
     // }
-
-    if (updates.password) {
-      updates.password = await bcrypt.hash(updates.password, 10);
-    }
+    if (updates.currentPassword && updates.password) {
+          const isMatch = await bcrypt.compare(updates.currentPassword, doctor.password);
+          if (!isMatch) {
+            return res.status(400).json({ message: "Current password is incorrect" });
+          }
+          updates.password = await bcrypt.hash(updates.password, 10)
+  }
 
     // Update doctor document
     const results = await db.collection("doctors").updateOne(
