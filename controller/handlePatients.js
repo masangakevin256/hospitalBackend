@@ -81,7 +81,7 @@ const addNewPatient = async (req,res) => {
     const roles = "patient"
     let registeredBy;
     const db = getDb();
-    const {name,age, phoneNumber, address, password, sickness, regId , assignedDoctor, assignedCareGiver, gender, email} = req.body;
+    const {name,age, phoneNumber, address, password, sickness, regId , assignedDoctor, assignedCareGiver, gender, email, bloodType} = req.body;
     if(!db) return res.status(404).json({"message": "Database not initialized"});
     if(!name || !age  || !address || !phoneNumber || !sickness || !regId  || !password || !assignedDoctor || !gender || !email ){
         return res.status(400).json({
@@ -160,12 +160,14 @@ const addNewPatient = async (req,res) => {
             "phoneNumber": phoneNumber,
             "roles": roles,
             "address": address,
+            "bloodType": bloodType,
             "registeredBy": registeredBy,
             "assignedDoctor": ({
               name: doctorToBeAssigned.username,
               phoneNumber: doctorToBeAssigned.phoneNumber
             }),
             "assignedCareGiver": ({
+
                name: careGiverToBeAssigned.name,
                 phoneNumber: careGiverToBeAssigned.phoneNumber
             }),
