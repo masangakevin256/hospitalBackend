@@ -81,7 +81,11 @@ const addNewPatient = async (req,res) => {
     const roles = "patient"
     let registeredBy;
     const db = getDb();
-    const {name,age, phoneNumber, address, password, sickness, regId , assignedDoctor, assignedCareGiver, gender, email, bloodType} = req.body;
+    const {
+      name,age, phoneNumber, address, password, sickness, regId , 
+      assignedDoctor, assignedCareGiver, gender, email,
+       bloodType, currentMedication, allergies, condition
+      } = req.body;
     if(!db) return res.status(404).json({"message": "Database not initialized"});
     if(!name || !age  || !address || !phoneNumber || !sickness || !regId  || !password || !assignedDoctor || !gender || !email ){
         return res.status(400).json({
@@ -94,7 +98,7 @@ const addNewPatient = async (req,res) => {
         const usedAdminId = await db.collection("admins").findOne({adminId: regId});
 
         if(!usedDoctorsId && !usedAdminId){
-            return res.status(400).json({"message": "Failed to verify doctors/admin id"});
+            return res.status(400).json({"message": "Failed to verify secret registration code"});
         }
         //check is assigned doctor exists
         const doctorToBeAssigned = await db.collection("doctors").findOne({username: assignedDoctor});
@@ -161,6 +165,9 @@ const addNewPatient = async (req,res) => {
             "roles": roles,
             "address": address,
             "bloodType": bloodType,
+            "condition": condition,
+            "currentMedication": currentMedication,
+            "allergies": allergies,
             "registeredBy": registeredBy,
             "assignedDoctor": ({
               name: doctorToBeAssigned.username,
