@@ -84,7 +84,8 @@ const addNewPatient = async (req,res) => {
     const {
       name,age, phoneNumber, address, password, sickness, regId , 
       assignedDoctor, assignedCareGiver, gender, email,
-       bloodType, currentMedication, allergies, condition
+       bloodType, currentMedication, allergies, condition,
+       emergencyContact,
       } = req.body;
     if(!db) return res.status(404).json({"message": "Database not initialized"});
     if(!name || !age  || !address || !phoneNumber || !sickness || !regId  || !password || !assignedDoctor || !gender || !email ){
@@ -168,6 +169,7 @@ const addNewPatient = async (req,res) => {
             "condition": condition,
             "currentMedication": currentMedication,
             "allergies": allergies,
+            "emergencyContact": emergencyContact,
             "registeredBy": registeredBy,
             "assignedDoctor": ({
               name: doctorToBeAssigned.username,
