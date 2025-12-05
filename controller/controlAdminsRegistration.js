@@ -40,7 +40,7 @@ const addNewAdmin = async (req,res) => {
             let adminId;
 
             if (lastAdmin.length === 0) {
-            // No parent yet → start with TC001
+            // No admin yet → start with AD001
                 adminId = "AD001";
             } else {
             // Extract the last adminId
