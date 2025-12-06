@@ -73,7 +73,7 @@ const getAllAlerts = async (req, res) => {
 const addAlert = async (req, res) => {
   const handleAllUsersInputs = require("./controlAllUsersInputs");
   const db = getDb();
-  const { patientId, alertType, message, status } = req.body;
+  const { patientId, alertType, message, status, priority } = req.body;
 
   if (!patientId || !alertType || !message) {
     return res.status(400).json({ message: "patientId, alertType, and message are required" });
@@ -88,6 +88,7 @@ const addAlert = async (req, res) => {
     const alertDoc = {
       "patientId": patientId,
       "alertType": alertType,
+      "priority": priority || "medium",
       "message": `Patient ${patient.name}: ${message}`,
       "status": status || "pending",
       timestamp: new Date().toISOString()
