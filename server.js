@@ -50,6 +50,7 @@ app.use("/doctors", require("./routes/doctors"));
 app.use("/patients", require("./routes/patients"));
 app.use("/careGivers", require("./routes/careGivers"));
 
+app.use("/tasks", require("./routes/tasks"));
 
 //  React fallback route (must come before the 404 handler)
 // app.get(/.*/, (req, res) => {
