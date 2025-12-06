@@ -46,6 +46,8 @@ const getAllAppointments = async (req, res) => {
 const addNewAppointment = async (req, res) => {
   const handleAllUsersInput = require("../controller/controlAllUsersInputs");
   const db = getDb();
+  const user = req.user;
+  const role = user.roles;
   const {
     patientId,
     patientName,
@@ -70,6 +72,18 @@ const addNewAppointment = async (req, res) => {
     const patient = await db.collection("patients").findOne({ patientId });
     if (!patient) {
       return res.status(400).json({ message: "Invalid patient ID" });
+    }
+
+    if(role === "doctor"){
+      if(patient.assignedDoctor?.name !== user.username){
+        return res.status(403).json({ message: "Access denied: not assigned to this patient" });
+      }
+    }
+
+    if(role === "caregiver"){
+      if(patient.assignedCareGiver?.name !== user.name){
+        return res.status(403).json({ message: "Access denied: not assigned to this patient" });
+      }
     }
     const assignedDoctor = patient.assignedDoctor.name;
     const assignedCareGiver = patient.assignedCareGiver.name;
