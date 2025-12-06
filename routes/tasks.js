@@ -7,6 +7,7 @@ const controlCareGiverTasks = require("../controller/controlCareGiverTask");
 router.get("/", verifyRoles(ROLE_LIST.CareGiver), controlCareGiverTasks.getCareGiverTasks);
 router.post("/", verifyRoles(ROLE_LIST.CareGiver), controlCareGiverTasks.addNewTask);
 router.put("/:id", verifyRoles(ROLE_LIST.CareGiver), controlCareGiverTasks.updateTask);
+router.patch("/:id", verifyRoles(ROLE_LIST.CareGiver), controlCareGiverTasks.patchTask);
 router.delete("/:id", verifyRoles(ROLE_LIST.CareGiver), controlCareGiverTasks.deleteTask);
 router.get("/:id", verifyRoles(ROLE_LIST.CareGiver), controlCareGiverTasks.getTask);    
 
