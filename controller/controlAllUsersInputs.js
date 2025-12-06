@@ -105,6 +105,7 @@ const validateAlertInput = (input) => {
     const schema = Joi.object({
         patientId: Joi.string().alphanum().min(3).required(),
         alertType: Joi.string().required(),
+        priority: Joi.string().required(),
         message: Joi.string().required(),
         status: Joi.string().required(),
         timestamp: Joi.string().required(),
