@@ -19,7 +19,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "build")));
 
 //routes 
 //login
@@ -39,8 +38,9 @@ app.use("/alerts", require("./routes/alerts"));
 app.use("/vitals", require("./routes/vitals"));
 // //profile
 app.use("/profiles", require("./routes/profile"));
-
-// //appointments
+//prescription
+app.use("/prescriptions", require("./routes/prescription"));
+//appointments
 app.use("/appointments", require("./routes/appointments"));
 // //getting single user 
 app.use("/auth/me", require("./routes/authMe"));
@@ -52,12 +52,7 @@ app.use("/careGivers", require("./routes/careGivers"));
 
 app.use("/tasks", require("./routes/tasks"));
 
-//  React fallback route (must come before the 404 handler)
-// app.get(/.*/, (req, res) => {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
-
-
+//for all routes that aren't initialized in the router
 app.all(/.*/, (req, res) => {
     res.status(404);
     if(req.accepts("html")){
