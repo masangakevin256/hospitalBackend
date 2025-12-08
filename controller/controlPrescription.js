@@ -108,8 +108,8 @@ const updatePrescription = async (req,res) => {
      const db = getDb();
 
     try {
-        if(updates.patientId) return res.status(400).json({message: "Can not update patient id"});
-        if(updates.patientName) return res.status(400).json({message: "Can not update patient name"});
+        // if(updates.patientId) return res.status(400).json({message: "Can not update patient id"});
+        // if(updates.patientName) return res.status(400).json({message: "Can not update patient name"});
 
         const prescription = await db.collection("prescriptions").findOne(
             {_id: new ObjectId(id)}
@@ -133,8 +133,8 @@ const patchPrescription = async (req,res) => {
     const db = getDb();
 
     try {
-        if(updates.patientId) return res.status(400).json({message: "Can not update patient id"});
-        if(updates.patientName) return res.status(400).json({message: "Can not update patient name"});
+        // if(updates.patientId) return res.status(400).json({message: "Can not update patient id"});
+        // if(updates.patientName) return res.status(400).json({message: "Can not update patient name"});
 
         const prescription = await db.collection("prescriptions").findOne(
             {_id: new ObjectId(id)}
