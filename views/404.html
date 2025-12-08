@@ -1,20 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error</title>
+    <title>404 - Page Not Found | MediCare Hospital</title>
+    <meta name="description" content="The page you're looking for doesn't exist at MediCare Hospital.">
     <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- Decorative Background Elements -->
+    <div class="decoration circle-1"></div>
+    <div class="decoration circle-2"></div>
+    
     <div class="container-404">
-        <h1>404</h1>
+        <!-- Error Number -->
+        <div class="error-number">404</div>
+        
+        <!-- Error Title -->
         <h2>Page Not Found</h2>
-        <p>Sorry, the page you are looking for does not exist.</p>
-        <a href="https://kevinnyprojectmedicarehospital.vercel.app" class="home-link">Go Back Home</a>
+        
+        <!-- Error Message -->
+        <p>Sorry, the page you are looking for does not exist or has been moved.</p>
+        <p style="font-size: 0.9em; opacity: 0.7;">You can return to our homepage using the button below.</p>
+        
+        <!-- Home Link with Loading Animation -->
+        <a href="https://kevinnyprojectmedicarehospital.vercel.app" class="home-link" id="homeLink">
+            <span class="hospital-icon">🏥</span>
+            <span>Return to MediCare Hospital</span>
+        </a>
+        
+        <!-- Help Text -->
+        <p style="font-size: 0.8em; opacity: 0.5; margin-top: 30px;">
+            Need help? Contact our support team.
+        </p>
     </div>
-</body>
 
+    <script>
+        // Add loading animation to home link
+        document.getElementById('homeLink').addEventListener('click', function(e) {
+            // Optional: Add loading state
+            this.innerHTML = '<div class="loading-spinner" style="display: inline-block;"></div> Loading...';
+            
+            // Optional: Analytics/Logging
+            console.log('404 page - User clicked "Return to Home"');
+        });
+
+        // Fade in animation
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = 0;
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = 1;
+            }, 100);
+        });
+    </script>
+</body>
 </html>
