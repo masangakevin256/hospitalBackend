@@ -30,6 +30,8 @@ app.use("/logout", require("./routes/logout"));
 //registration routes
 app.use("/register/admins", require("./routes/registerAdmins"));
 app.use("/register/doctors", require("./routes/registerDoctors"));
+//send error file
+app.use("/error", require("./routes/error"));
 //patients only added by doctor or admin
 app.use(verifyJwt);
 //handle alerts
