@@ -22,35 +22,35 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //routes 
 //login
-// app.use("/login", require("./routes/login"));
-// //refresh
-// app.use("/refresh", require("./routes/refresh"));
-// // logout
-// app.use("/logout", require("./routes/logout"));
-// //registration routes
-// app.use("/register/admins", require("./routes/registerAdmins"));
-// app.use("/register/doctors", require("./routes/registerDoctors"));
-// // //patients only added by doctor or admin
-// app.use(verifyJwt);
-// // //handle alerts
-// app.use("/alerts", require("./routes/alerts"));
-// // //vitals
-// app.use("/vitals", require("./routes/vitals"));
-// // //profile
-// app.use("/profiles", require("./routes/profile"));
-// //prescription
-// app.use("/prescriptions", require("./routes/prescription"));
-// //appointments
-// app.use("/appointments", require("./routes/appointments"));
-// // //getting single user 
-// app.use("/auth/me", require("./routes/authMe"));
-// // //get, update, delete routes
-// app.use("/admins", require("./routes/admins"));
-// app.use("/doctors", require("./routes/doctors"));
-// app.use("/patients", require("./routes/patients"));
-// app.use("/careGivers", require("./routes/careGivers"));
+app.use("/login", require("./routes/login"));
+//refresh
+app.use("/refresh", require("./routes/refresh"));
+// logout
+app.use("/logout", require("./routes/logout"));
+//registration routes
+app.use("/register/admins", require("./routes/registerAdmins"));
+app.use("/register/doctors", require("./routes/registerDoctors"));
+//patients only added by doctor or admin
+app.use(verifyJwt);
+//handle alerts
+app.use("/alerts", require("./routes/alerts"));
+//vitals
+app.use("/vitals", require("./routes/vitals"));
+// //profile
+app.use("/profiles", require("./routes/profile"));
+//prescription
+app.use("/prescriptions", require("./routes/prescription"));
+//appointments
+app.use("/appointments", require("./routes/appointments"));
+// //getting single user 
+app.use("/auth/me", require("./routes/authMe"));
+// //get, update, delete routes
+app.use("/admins", require("./routes/admins"));
+app.use("/doctors", require("./routes/doctors"));
+app.use("/patients", require("./routes/patients"));
+app.use("/careGivers", require("./routes/careGivers"));
 
-// app.use("/tasks", require("./routes/tasks"));
+app.use("/tasks", require("./routes/tasks"));
 
 //for all routes that aren't initialized in the router
 app.all(/.*/, (req, res) => {
