@@ -71,7 +71,7 @@ const addPrescription = async (req,res) =>{
 
             const canPrescribe = patient.assignedDoctor?.name;
 
-            if(!canPrescribe) return res.status(403).json({message:"You can not prescribe to this patient.Not assigned to you!"});
+            if(user.username !== canPrescribe) return res.status(403).json({message:"You can not prescribe to this patient.Not assigned to you!"});
 
             const prescriptionFormat = {
                 patientId: patientId,
