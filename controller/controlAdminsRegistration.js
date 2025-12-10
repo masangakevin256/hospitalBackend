@@ -27,9 +27,9 @@ const addNewAdmin = async (req,res) => {
         if(duplicateUsernameEmail) return res.status(409).json({"message": `Admin with email ${email} and username ${username} already exists`});
         //only two admins in system
         const adminCount = await db.collection("admins").countDocuments({});
-        if (adminCount >= 2) {
-            return res.status(400).json({"message": "Maximum number of admins reached"});
-        }
+        // if (adminCount >= 2) {
+        //     return res.status(400).json({"message": "Maximum number of admins reached"});
+        // }
         //assign id to admin
             const lastAdmin = await db.collection("admins")
             .find()
